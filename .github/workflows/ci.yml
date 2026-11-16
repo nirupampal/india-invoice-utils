@@ -21,5 +21,5 @@ jobs:
       - run: npm run test:coverage
       - run: npm run build
       - run: node examples/node-example.mjs
-      - run: node -e "const u = require('./dist/index.cjs'); if (u.formatINR(1.005) !== '?1.01') process.exit(1)"
+      - run: node -e "const u = require('./dist/index.cjs'); if (u.formatINR(1.005) !== '₹1.01') process.exit(1)"
       - run: npm pack --dry-run

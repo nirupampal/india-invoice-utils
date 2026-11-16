@@ -18,3 +18,9 @@ it('looks up all state codes and aliases without prototype leakage', () => {
   expect(Object.isFrozen(GST_STATE_CODES)).toBe(true);
   expect(Object.isFrozen(GST_STATE_CODES['19'])).toBe(true);
 });
+it('returns undefined for non-string state input', () => {
+  for (const value of [null, undefined, 7] as unknown as string[]) {
+    expect(getStateByCode(value)).toBeUndefined();
+    expect(getStateCode(value)).toBeUndefined();
+  }
+});

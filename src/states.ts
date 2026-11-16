@@ -25,7 +25,7 @@ export const GST_STATE_CODES: Readonly<Record<string, GSTState>> = /* @__PURE__ 
  * @example getStateByCode('7'); // { code: '07', name: 'Delhi', ut: true }
  */
 export function getStateByCode(code: string): GSTState | undefined {
-  const normalized = code.trim();
+  const normalized = typeof code === 'string' ? code.trim() : '';
   return /^\d{1,2}$/.test(normalized) ? GST_STATE_CODES[normalized.padStart(2, '0')] : undefined;
 }
 const aliases: Readonly<Record<string, string>> = {
@@ -37,6 +37,6 @@ const aliases: Readonly<Record<string, string>> = {
  * @example getStateCode('Orissa'); // '21'
  */
 export function getStateCode(nameOrAlias: string): string | undefined {
-  const name = nameOrAlias.trim().toLowerCase();
+  const name = typeof nameOrAlias === 'string' ? nameOrAlias.trim().toLowerCase() : '';
   return Object.prototype.hasOwnProperty.call(aliases, name) ? aliases[name] : Object.values(GST_STATE_CODES).find(state => state.name.toLowerCase() === name)?.code;
 }

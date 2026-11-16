@@ -20,7 +20,7 @@ export function getGSTINChecksum(first14: string): string {
  * @example validateGSTIN('27AAPFU0939F1ZV'); // { valid: true }
  */
 export function validateGSTIN(gstin: string): GSTINValidation {
-  const value = gstin.trim().toUpperCase();
+  const value = typeof gstin === 'string' ? gstin.trim().toUpperCase() : '';
   if (value.length !== 15) return { valid: false, error: 'LENGTH' };
   if (!/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(value)) return { valid: false, error: 'FORMAT' };
   if (!getStateByCode(value.slice(0, 2))) return { valid: false, error: 'STATE_CODE' };

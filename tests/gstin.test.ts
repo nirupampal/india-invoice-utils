@@ -17,3 +17,9 @@ it('generates, validates and parses checksums', () => {
   expect(parseGSTIN('bad')).toBeNull();
   for (const prefix of ['short', '!!!!!!!!!!!!!!']) expect(() => getGSTINChecksum(prefix)).toThrow(RangeError);
 });
+it('rejects non-string GSTIN input without throwing', () => {
+  for (const value of [null, undefined, 27, {}] as unknown as string[]) {
+    expect(validateGSTIN(value)).toEqual({ valid: false, error: 'LENGTH' });
+    expect(parseGSTIN(value)).toBeNull();
+  }
+});

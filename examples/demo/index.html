@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GST Invoice Calculator · india-invoice-utils</title>
+    <meta name="description" content="Free GST invoice calculator: CGST/SGST/IGST, tax-inclusive prices, cess, discounts, round-off and amount in words. Runs in your browser." />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>GST Invoice Calculator</h1>
+        <p>
+          Paise-accurate CGST/SGST/IGST with
+          <a href="https://www.npmjs.com/package/india-invoice-utils">india-invoice-utils</a>.
+          Everything runs in your browser.
+        </p>
+      </header>
+
+      <section class="options">
+        <label><input type="checkbox" id="interstate" /> Inter-state (IGST)</label>
+        <label><input type="checkbox" id="inclusive" /> Prices include GST</label>
+        <label><input type="checkbox" id="roundOff" checked /> Round off to ₹1</label>
+      </section>
+
+      <div class="table-wrap">
+        <table id="items">
+          <thead>
+            <tr>
+              <th>Item</th><th>Qty</th><th>Unit price (₹)</th><th>GST %</th><th>Discount %</th><th>Cess %</th><th>Line total</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <button id="add" type="button">+ Add item</button>
+
+      <section id="summary" aria-live="polite"></section>
+      <p id="error" role="alert"></p>
+
+      <section class="gstin">
+        <h2>Check a GSTIN</h2>
+        <input id="gstin" placeholder="27AAPFU0939F1ZV" maxlength="15" autocomplete="off" />
+        <span id="gstinResult"></span>
+      </section>
+
+      <footer>
+        <code>npm install india-invoice-utils</code> ·
+        <a href="https://github.com/nirupampal/india-invoice-utils">GitHub</a> ·
+        Not tax advice.
+      </footer>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

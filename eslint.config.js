@@ -6,4 +6,5 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { files: ['**/*.mjs'], languageOptions: { globals: { console: 'readonly' } } },
+  { files: ['examples/demo/**/*.js'], languageOptions: { globals: { document: 'readonly' } } },
 );

@@ -15,7 +15,7 @@ function words(n: number): string {
  * @throws {RangeError} For fractional, non-finite or out-of-range values.
  */
 export function numberToIndianWords(n: number): string {
-  if (!Number.isSafeInteger(n) || Math.abs(n) > MAX) throw new RangeError('Expected an integer within �99,99,99,99,99,999');
+  if (!Number.isSafeInteger(n) || Math.abs(n) > MAX) throw new RangeError('Expected an integer within ±99,99,99,99,99,999');
   return `${n < 0 ? 'Minus ' : ''}${words(Math.abs(n))}`;
 }
 /** Spell money after rounding to paise. Default Rupees/Paise singularize automatically.

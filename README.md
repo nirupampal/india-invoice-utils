@@ -4,12 +4,24 @@
 [![downloads](https://img.shields.io/npm/dw/india-invoice-utils)](https://www.npmjs.com/package/india-invoice-utils)
 [![CI](https://github.com/nirupampal/india-invoice-utils/actions/workflows/ci.yml/badge.svg)](https://github.com/nirupampal/india-invoice-utils/actions/workflows/ci.yml)
 [![size](https://img.shields.io/bundlephobia/minzip/india-invoice-utils)](https://bundlephobia.com/package/india-invoice-utils)
-[![license](https://img.shields.io/npm/l/india-invoice-utils)](LICENSE)
+[![license](https://img.shields.io/npm/l/india-invoice-utils)](https://github.com/nirupampal/india-invoice-utils/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org/)
 
 Zero-dependency Indian invoicing: INR formatting, lakh/crore words, paise-accurate GST, invoice totals and offline ID validation.
 
-Registry badges become available after the first npm publication.
+**[Try it live on StackBlitz](https://stackblitz.com/github/nirupampal/india-invoice-utils/tree/main/examples/demo?file=index.html)**: a small GST invoice calculator built with this package.
+
+```ts
+import { calculateInvoice } from 'india-invoice-utils';
+
+const invoice = calculateInvoice({
+  items: [{ name: 'Consulting', quantity: 2, unitPrice: 100, gstRate: 18 }],
+});
+invoice.totalCGST;         // 18
+invoice.totalSGST;         // 18
+invoice.grandTotal;        // 236
+invoice.grandTotalInWords; // 'Two Hundred Thirty Six Rupees Only'
+```
 
 ## Why
 
@@ -17,6 +29,14 @@ Registry badges become available after the first npm publication.
 - Integer paise for money and exact decimal ratios for percentages and quantities.
 - Indian numbering with singular Rupee/Paisa support.
 - Strict TypeScript, ESM/CommonJS declarations, named exports and tree shaking.
+- About 5 kB gzipped; published with npm provenance.
+
+### Why not just `Intl.NumberFormat('en-IN')`?
+
+`Intl` formats numbers well, but it does not split GST into CGST/SGST/IGST,
+allocate odd paise, back-calculate tax-inclusive prices, group tax by rate,
+round off to the rupee or write "Rupees ... Only". This package does all of
+that in integer paise, so CGST + SGST always adds up to the printed total.
 
 ## Install
 
@@ -47,7 +67,7 @@ const { formatINR } = require('india-invoice-utils');
 ```ts
 import { formatINR, amountInWords, calculateGST } from 'india-invoice-utils';
 
-formatINR(123456.5); // '?1,23,456.50'
+formatINR(123456.5); // '₹1,23,456.50'
 amountInWords(1.005); // 'One Rupee and One Paisa Only'
 calculateGST({ amount: 100, rate: 18 });
 // { taxableValue: 100, cgst: 9, sgst: 9, igst: 0, cess: 0,
@@ -84,13 +104,13 @@ Intrastate GST assigns odd paise to SGST. CGST + SGST equals GST alone;
 totalTax also includes cess. Interstate supplies use IGST. Extra charges share
 pricesIncludeTax and are included in subtotal, groups and totals. Groups sort by
 GST rate and aggregate cess even when cess rates differ. roundOff defaults true,
-rounding the final total to the nearest rupee, half upward. Empty invoices and
-zero quantities are valid.
+rounding the final total to the nearest rupee, half upward, so an invoice under
+50 paise rounds to a grand total of zero. Empty invoices and zero quantities are valid.
 
 ## Full API reference
 
 Examples below assume named imports from india-invoice-utils. All public types
-are exported; see src/types.ts for complete declarations.
+are exported; see [src/types.ts](https://github.com/nirupampal/india-invoice-utils/blob/main/src/types.ts) for complete declarations.
 
 ### Formatting
 
@@ -104,7 +124,7 @@ formatIndianNumber(-500, { decimals: 0 }); // '-500'
 `formatINR(value: number, opts?: { symbol?: boolean; decimals?: number; showPlusSign?: boolean }): string`
 
 ```ts
-formatINR(-500); // '-?500.00'
+formatINR(-500); // '-₹500.00'
 formatINR(500, { symbol: false, showPlusSign: true }); // '+500.00'
 ```
 
@@ -114,10 +134,10 @@ Rounded zero has no sign. Invalid precision/non-finite values throw RangeError.
 `formatCompactINR(value: number, opts?: { decimals?: number }): string`
 
 ```ts
-formatCompactINR(1500); // '?1.5K'
-formatCompactINR(250000); // '?2.5 L'
-formatCompactINR(34000000); // '?3.4 Cr'
-formatCompactINR(1000, { decimals: 2 }); // '?1K'
+formatCompactINR(1500); // '₹1.5K'
+formatCompactINR(250000); // '₹2.5 L'
+formatCompactINR(34000000); // '₹3.4 Cr'
+formatCompactINR(1000, { decimals: 2 }); // '₹1K'
 ```
 
 Defaults to one decimal; trailing fractional zeros are trimmed. Units are chosen
@@ -345,7 +365,8 @@ against the [GST portal](https://www.gst.gov.in/) before each release.
 
 ### Validators
 
-Inputs are strings and are trimmed; case is ignored where sensible. These check
+Inputs are strings and are trimmed; case is ignored where sensible. Non-string
+input returns false (or null/undefined) instead of throwing. These check
 syntax, not issuance, existence, ownership or reachability.
 
 ```ts
@@ -436,13 +457,11 @@ online or guarantee legal compliance.
 
 ## Contributing and release
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-and [SECURITY.md](SECURITY.md). CI requires lint, strict typecheck, tests with
-95% coverage thresholds and dual builds on Node 18/20/22. Release uses Changesets
-and npm provenance. Enable private vulnerability reporting and Actions permission
-to create pull requests, and configure NPM_TOKEN before enabling publishing.
-Confirm npm name availability. Setup does not publish a package.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](https://github.com/nirupampal/india-invoice-utils/blob/main/CONTRIBUTING.md),
+[CODE_OF_CONDUCT.md](https://github.com/nirupampal/india-invoice-utils/blob/main/CODE_OF_CONDUCT.md) and [SECURITY.md](https://github.com/nirupampal/india-invoice-utils/blob/main/SECURITY.md).
+CI runs lint, strict typecheck, tests with 95% coverage thresholds and dual
+builds on Node 18/20/22. Releases use Changesets and npm provenance.
 
 ## License
 
-[MIT](LICENSE) c 2026 Nirupam Pal.
+[MIT](https://github.com/nirupampal/india-invoice-utils/blob/main/LICENSE) © 2026 Nirupam Pal.

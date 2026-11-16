@@ -21,7 +21,7 @@
   "repository": { "type": "git", "url": "https://github.com/nirupampal/india-invoice-utils.git" },
   "homepage": "https://github.com/nirupampal/india-invoice-utils#readme",
   "bugs": { "url": "https://github.com/nirupampal/india-invoice-utils/issues" },
-  "keywords": ["gst", "gstin", "invoice", "inr", "rupee", "india", "lakh", "crore", "amount-in-words", "pan", "ifsc", "billing", "pos", "tax", "number-to-words", "typescript", "react", "nextjs"],
+  "keywords": ["gst", "gstin", "gst-calculator", "cgst", "sgst", "igst", "cess", "invoice", "tax-invoice", "invoice-calculator", "billing", "inr", "rupee", "indian-currency", "inr-format", "rupees-in-words", "amount-in-words", "number-to-words-indian", "lakh", "crore", "paise", "india", "pan", "pan-validator", "gstin-validator", "ifsc", "ifsc-validator", "hsn", "typescript", "nextjs"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
