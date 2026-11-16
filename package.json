@@ -1,0 +1,48 @@
+{
+  "name": "india-invoice-utils",
+  "version": "0.1.0",
+  "description": "Zero-dependency, typed Indian invoicing utilities with paise-accurate GST, invoice totals, INR words and ID validation.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "engines": { "node": ">=18" },
+  "publishConfig": { "access": "public", "provenance": true },
+  "license": "MIT",
+  "author": "Nirupam Pal",
+  "repository": { "type": "git", "url": "https://github.com/nirupampal/india-invoice-utils.git" },
+  "homepage": "https://github.com/nirupampal/india-invoice-utils#readme",
+  "bugs": { "url": "https://github.com/nirupampal/india-invoice-utils/issues" },
+  "keywords": ["gst", "gstin", "invoice", "inr", "rupee", "india", "lakh", "crore", "amount-in-words", "pan", "ifsc", "billing", "pos", "tax", "number-to-words", "typescript", "react", "nextjs"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "@eslint/js": "^9.22.0",
+    "@types/node": "^18.19.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,41 @@
+name: Release
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --package-lock=false
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - uses: changesets/action@v1
+        with:
+          title: 'Version Packages'
+          commit: 'chore: version packages'
+          publish: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Equivalent to npm publish --provenance when Changesets invokes npm.
+          NPM_CONFIG_PROVENANCE: 'true'
+          # To switch to npm Trusted Publishing (OIDC): configure this repository
+          # and release.yml in npm's trusted publisher settings, install npm >=11.5.1,
+          # remove NPM_TOKEN here and any token-based .npmrc, retain id-token: write.
+          # Use an OIDC-compatible Changesets version. Provenance is automatic for
+          # public packages published from public repositories via trusted publishing.
