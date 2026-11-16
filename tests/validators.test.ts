@@ -10,6 +10,16 @@ it('validates PAN and holder types', () => {
   expect(getPANHolderType('ABCXA1234F')).toBeNull();
   expect(getPANHolderType('invalid')).toBeNull();
 });
+it('returns false or null for non-string input instead of throwing', () => {
+  for (const value of [null, undefined, 123, {}, []] as unknown as string[]) {
+    expect(validatePAN(value)).toBe(false);
+    expect(getPANHolderType(value)).toBeNull();
+    expect(validateIFSC(value)).toBe(false);
+    expect(validatePincode(value)).toBe(false);
+    expect(validateIndianMobile(value)).toBe(false);
+    expect(normalizeIndianMobile(value)).toBeNull();
+  }
+});
 it('validates IFSC and pincodes', () => {
   expect(validateIFSC(' sbin0001234 ')).toBe(true);
   expect(validateIFSC('SBIN1001234')).toBe(false);
